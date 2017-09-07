@@ -29,10 +29,29 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.android.support:design:25.3.1'
 
+    // butter knif
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    // end butter knif
+
     // glide
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile 'com.android.support:support-v4:25.3.1'
+    // end glid
 
+    //gson
+    compile 'com.google.code.gson:gson:2.8.1'
+    // end gson
+
+    // start okhttp
+      compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    // end okhttp
+
+    //dagger
+    compile "com.google.dagger:dagger:2.9"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    provided 'javax.annotation:jsr250-api:1.0'
+    // end dagger
 
     testCompile 'junit:junit:4.12'
 }

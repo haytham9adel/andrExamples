@@ -1,9 +1,7 @@
 package com.example.andr.andr_example;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,47 +12,66 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.example.andr.andr_example.application.ApplicationComponentImpl;
 import com.example.andr.andr_example.helpers.Constants;
-import com.example.andr.andr_example.libs.GlideExample;
+import com.example.andr.andr_example.examples.GlideExample;
+import com.example.andr.andr_example.examples.GsonExample;
+import com.example.andr.andr_example.model.UserModel;
+import com.example.andr.andr_example.useCase.SomeUseCase;
+
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @Inject
+    SomeUseCase mSomeUseCase ;
 
-    ImageView glido ;
+    @BindView(R.id.glidTest)
+     ImageView glido ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer);
+      try {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.activity_drawer);
 
-        // start glide test
-        glido = (ImageView)findViewById(R.id.glidTest) ;
-        GlideExample.loadUrlOnImgView(
-                  this
-                , Constants.GLIDE_IMG
-                , glido  );
-        // end glide test//
+          // butterKnif
+          ButterKnife.bind(this);
+          // end butterKnif
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+          // start glide test
+          GlideExample.loadUrlOnImgView(this, Constants.GLIDE_IMG, glido);
+          // end glide test//
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+          // start GSON test
+             GsonExample gsonExample = new GsonExample();
+             UserModel userModel = new UserModel( 1L , "haytham" , "naser city" );
+             String str = gsonExample.getJsonFromModel(userModel);
+             Log.i("json: " , str ) ;
+          // End GSON test
+
+          // DAGGER 2
+               ApplicationComponentImpl.getInstance().getUseCaseComponent().inject(this);
+               mSomeUseCase.getGitHubRepo() ;
+          // END DAGGER
+
+          Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+          setSupportActionBar(toolbar);
+
+
+          DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+          ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                  this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+          drawer.setDrawerListener(toggle);
+          toggle.syncState();
+
+          NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+          navigationView.setNavigationItemSelectedListener(this);
+      }catch (Exception e) {e.printStackTrace();}
     }
 
     @Override
@@ -91,14 +108,6 @@ public class DrawerActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
